@@ -4,13 +4,14 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import ast  # To parse the type column
 from preprocessing import load_pokedex_data, load_votes_data, preprocess_data
+from model_integration import integrate_model_tab
  
 # Load the combined dataset
 joint_df = preprocess_data()
  
 # ---- Sidebar with Pokemon logo ----
 st.sidebar.header("Filter")
-st.sidebar.image("img/pokemon_logo.png", width=200)  # Add the local Pokemon logo image
+#st.sidebar.image("img/pokemon_logo.png", width=200)  # Add the local Pokemon logo image
 selected_types = st.sidebar.multiselect("Select Type:",
                                         sorted(set(t for types in joint_df["type"] for t in types)))
  
@@ -39,7 +40,7 @@ display_columns = ["name", "type", "hp", "attack", "defense", "s_attack", "s_def
 st.dataframe(filtered_df[display_columns])
  
 # ---- Stats Visualization Tab ----
-tab1, tab2, tab3, tab4 = st.tabs(["Stats Distribution", "Popularity Analysis", "Popularity by Type", "Pokémon Details"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Stats Distribution", "Popularity Analysis", "Popularity by Type", "Pokémon Details", "Prediction"])
  
 with tab1:
     st.subheader("Pokémon Stats Distribution")
@@ -286,6 +287,9 @@ with tab4:
             st.write("No Pokémon found!")
     else:
         st.write("Enter a Pokémon name to see details.")
+with tab5:
+    st.subheader("Prediction")
+    integrate_model_tab()
 
 # Add a footer with disclaimer
 st.markdown("---")  # Horizontal line to separate content from footer
